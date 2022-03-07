@@ -10,7 +10,6 @@ let currPlace = 1;
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    console.log('deleting data...');
     dataHtml = `
         <tr>
             <th rowspan=3>Customer</th>
@@ -114,13 +113,8 @@ class Customer {
             this.interarrivalRda = generateRandomInt();
             this.interarrival = getIatRdaEquiv(this.interarrivalRda);
             this.arrival = this.interarrival + prevCust.arrival;
-
-            //get when able is available
             this.ableAvailable = (prevCust.endsAble > prevCust.ableAvailable) ? prevCust.endsAble : prevCust.ableAvailable;
-            // get when baker is available
             this.bakerAvailable = (prevCust.endsBaker > prevCust.bakerAvailable) ? prevCust.endsBaker : prevCust.bakerAvailable;
-
-
 
             //go to baker
             if(this.ableAvailable > this.bakerAvailable && this.ableAvailable > this.arrival){
@@ -128,51 +122,40 @@ class Customer {
 
                 //if cust is late, else if early
                 this.beginsBaker = (this.arrival >= this.bakerAvailable) ? this.arrival : this.bakerAvailable;
-
                 this.serviceBakerRda = generateRandomInt();
                 this.serviceBaker = getServiceRdaBaker(this.serviceBakerRda);
                 this.endsBaker = this.serviceBaker + this.beginsBaker;
                 this.beginsAble = '-';
                 this.serviceAbleRda = '-';
                 this.serviceAble = '-';
-
-                //get idle
                 this.idle = (this.chosen === 'Able') ? this.arrival - this.ableAvailable : this.arrival - this.bakerAvailable;
             } 
 
-            //else go to able
+            //go to able
             else {
                 this.chosen = 'Able';
 
                 //if cust is late, else if early
                 this.beginsAble = (this.arrival >= this.ableAvailable) ? this.arrival : this.ableAvailable;
-
                 this.serviceAbleRda = generateRandomInt();
                 this.serviceAble = getServiceRdaAble(this.serviceAbleRda);
                 this.endsAble = this.serviceAble + this.beginsAble;
                 this.beginsBaker = '-';
                 this.serviceBakerRda = '-';
                 this.serviceBaker = '-';
-
-                //get idle
                 this.idle = (this.chosen == 'Able') ? this.arrival - this.ableAvailable : this.arrival - this.bakerAvailable;
-
             }
         }
+        
         //if customer 1
         else {
             this.chosen = 'Able';
             this.interarrivalRda = '-';
             this.interarrival = '-';
-            this.arrival = 0;
             this.beginsAble = this.arrival;
             this.serviceAbleRda = generateRandomInt();
             this.serviceAble = getServiceRdaAble(this.serviceAbleRda);
             this.endsAble = this.serviceAble + this.beginsAble;
-            this.beginsBaker = 0;
-            this.serviceBaker = 0;
-            this.endsBaker = 0;
-            this.waiting = 0;
             this.spent = this.serviceAble + this.waiting;
         }
 

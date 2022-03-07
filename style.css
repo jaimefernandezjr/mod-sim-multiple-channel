@@ -1,0 +1,84 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* text */
+h1, h5 {
+    color: #009878;
+}
+
+h1 {
+    padding: 1rem 0 0 0;
+}
+
+
+/* input */
+form {
+    display: flex;
+    margin: 1rem 0 0 0;
+}
+
+#input-bar {
+    padding: 10px;
+    outline: none;
+    border: 1px solid #009878;
+    border-radius: 5px 0 0 5px;
+    background: #f4faf9;
+}
+
+#input-button {
+    border-radius: 0 5px 5px 0;
+    background-color: #009878;
+    color: #FFFFFF;
+    padding: 11px;
+}
+
+
+/* table properties */
+table {
+    margin: 1rem;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+td {
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tr:last-of-type {
+    border-bottom: 2px solid #009878;
+}
+
+th {
+    background: #009878;
+    color: #FFFFFF;
+    font-weight: normal;
+    padding: 0.5rem;
+    border: 1px solid rgb(228, 228, 228);
+}
+
+tr {
+    border-bottom: 1px solid #dddddd;
+
+}
+
+table, th, td {
+    border-collapse: collapse;
+}
+

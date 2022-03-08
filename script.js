@@ -6,7 +6,7 @@ let tableData = [];
 let dataHtml = '';
 let currPlace = 1;
 
-// 1. get number of iteration upon after submitting
+// 1. get number of iteration after submitting
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -103,8 +103,6 @@ class Customer {
         this.spent = 0;
         this.idle = 0;
 
-        this.place = place;
-
         // if not customer 1
         let prevCust = tableData[tableData.length - 1];
         if(tableData.length != 0) {
@@ -128,7 +126,7 @@ class Customer {
                 this.beginsAble = '-';
                 this.serviceAbleRda = '-';
                 this.serviceAble = '-';
-                this.idle = (this.chosen === 'Able') ? this.arrival - this.ableAvailable : this.arrival - this.bakerAvailable;
+                this.idle = (this.arrival - this.bakerAvailable < 0) ? 0 : this.arrival - this.bakerAvailable;
             } 
 
             //go to able
@@ -143,12 +141,13 @@ class Customer {
                 this.beginsBaker = '-';
                 this.serviceBakerRda = '-';
                 this.serviceBaker = '-';
-                this.idle = (this.chosen == 'Able') ? this.arrival - this.ableAvailable : this.arrival - this.bakerAvailable;
+                this.idle = (this.arrival - this.ableAvailable < 0) ? 0 : this.arrival - this.ableAvailable;
             }
         }
-        
+
         //if customer 1
         else {
+            this.place = place;
             this.chosen = 'Able';
             this.interarrivalRda = '-';
             this.interarrival = '-';
@@ -170,11 +169,6 @@ class Customer {
         this.spent = (this.chosen === 'Able')
             ? this.serviceAble + this.waiting
             : this.serviceBaker + this.waiting;
-
-        //convert negative idle to 0
-        if(this.idle < 0) {
-            this.idle = 0;
-        }
 
         tableData.push({
             place: this.place,

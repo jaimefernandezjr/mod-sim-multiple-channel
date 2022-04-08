@@ -18,7 +18,6 @@ let avgArrivalTime = 0;
 let avgWaitingInQueue = 0;
 let avgCustomerSpent = 0;
 
-
 //specific perofrmance metrics
 let sumWaitingTime = 0;        //1
 let totalNumberOfCustomer = 0; //1
@@ -32,8 +31,8 @@ let ableTotalNumberOfCustomer = 0; //4
 let bakerTotalServiceTime = 0;        //4
 let bakerTotalNumberOfCustomer = 0; //5
 let sumInterarrivalTime = 0; //6
-let numberOfArrivals = totalNumberOfCustomer; //6
-let sumSpentInSystem = 0; //7
+let numberOfArrivals = totalNumberOfCustomer; 
+let sumSpentInSystem = 0; 
 
 // 1. get number of iteration after submitting
 form.addEventListener('submit', (e) => {
@@ -151,6 +150,22 @@ let generatePerformanceTable = () => {
     `;
     performanceTable.innerHTML = '';
     performanceTable.innerHTML += performanceHtml;
+
+    //reset all variables
+    sumWaitingTime = 0;        //1
+    totalNumberOfCustomer = 0; //1
+    numCustomerWait = 0;       //2
+    ableSumIdleTime = 0;          //3
+    bakerSumIdleTime = 0;          //3
+    ableLatestTimeServiceEnd = 0; //3
+    bakerLatestTimeServiceEnd = 0; //3
+    ableTotalServiceTime = 0;        //4
+    ableTotalNumberOfCustomer = 0; //4
+    bakerTotalServiceTime = 0;        //4
+    bakerTotalNumberOfCustomer = 0; //5
+    sumInterarrivalTime = 0; //6
+    numberOfArrivals = totalNumberOfCustomer; 
+    sumSpentInSystem = 0;
 }
 
 

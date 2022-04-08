@@ -1,3 +1,7 @@
+// Authors: 
+// Arevalo, Lance Gabrielle
+// Fernandez, Jaime Jr. I.
+
 const form = document.getElementById('form');
 const inputBar = document.getElementById('input-bar'); 
 const tableBody = document.getElementById('table-body');

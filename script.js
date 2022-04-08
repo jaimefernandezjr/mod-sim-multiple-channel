@@ -124,11 +124,11 @@ let generatePerformanceTable = () => {
             <td class='left-align'>${probabilityWait}</td>
         </tr>
         <tr>
-            <td class='left-align'>The proportion of idle time of the server of Able</td>
+            <td class='left-align'>The proportion of idle time of Able</td>
             <td class='left-align'>${ableProportionIdle}</td>
         </tr>
         <tr>
-            <td class='left-align'>The proportion of idle time of the server of Baker</td>
+            <td class='left-align'>The proportion of idle time of Baker</td>
             <td class='left-align'>${bakerProportionIdle}</td>
         </tr>
         <tr>

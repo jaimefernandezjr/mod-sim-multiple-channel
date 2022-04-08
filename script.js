@@ -23,18 +23,18 @@ let avgWaitingInQueue = 0;
 let avgCustomerSpent = 0;
 
 //specific perofrmance metrics
-let sumWaitingTime = 0;        //1
-let totalNumberOfCustomer = 0; //1
-let numCustomerWait = 0;       //2
-let ableSumIdleTime = 0;          //3
-let bakerSumIdleTime = 0;          //3
-let ableLatestTimeServiceEnd = 0; //3
-let bakerLatestTimeServiceEnd = 0; //3
-let ableTotalServiceTime = 0;        //4
-let ableTotalNumberOfCustomer = 0; //4
-let bakerTotalServiceTime = 0;        //4
-let bakerTotalNumberOfCustomer = 0; //5
-let sumInterarrivalTime = 0; //6
+let sumWaitingTime = 0;        
+let totalNumberOfCustomer = 0; 
+let numCustomerWait = 0;      
+let ableSumIdleTime = 0;         
+let bakerSumIdleTime = 0;         
+let ableLatestTimeServiceEnd = 0; 
+let bakerLatestTimeServiceEnd = 0; 
+let ableTotalServiceTime = 0;        
+let ableTotalNumberOfCustomer = 0; 
+let bakerTotalServiceTime = 0;       
+let bakerTotalNumberOfCustomer = 0; 
+let sumInterarrivalTime = 0; 
 let numberOfArrivals = totalNumberOfCustomer; 
 let sumSpentInSystem = 0; 
 
@@ -92,7 +92,7 @@ let generateNumIter = (numIter) => {
     ableAvgServiceTime = ableTotalServiceTime / ableTotalNumberOfCustomer;
     bakerAvgServiceTime = bakerTotalServiceTime / bakerTotalNumberOfCustomer;
     avgArrivalTime = sumInterarrivalTime / (totalNumberOfCustomer - 1);
-    avgWaitingInQueue = sumWaitingTime / numCustomerWait;
+    avgWaitingInQueue = (numCustomerWait != 0) ? sumWaitingTime / numCustomerWait : 0;
     avgCustomerSpent = sumSpentInSystem / totalNumberOfCustomer;
 
     console.log(sumWaitingTime, totalNumberOfCustomer);
@@ -156,18 +156,18 @@ let generatePerformanceTable = () => {
     performanceTable.innerHTML += performanceHtml;
 
     //reset all variables
-    sumWaitingTime = 0;        //1
-    totalNumberOfCustomer = 0; //1
-    numCustomerWait = 0;       //2
-    ableSumIdleTime = 0;          //3
-    bakerSumIdleTime = 0;          //3
-    ableLatestTimeServiceEnd = 0; //3
-    bakerLatestTimeServiceEnd = 0; //3
-    ableTotalServiceTime = 0;        //4
-    ableTotalNumberOfCustomer = 0; //4
-    bakerTotalServiceTime = 0;        //4
-    bakerTotalNumberOfCustomer = 0; //5
-    sumInterarrivalTime = 0; //6
+    sumWaitingTime = 0;       
+    totalNumberOfCustomer = 0; 
+    numCustomerWait = 0;       
+    ableSumIdleTime = 0;          
+    bakerSumIdleTime = 0;          
+    ableLatestTimeServiceEnd = 0; 
+    bakerLatestTimeServiceEnd = 0; 
+    ableTotalServiceTime = 0;        
+    ableTotalNumberOfCustomer = 0; 
+    bakerTotalServiceTime = 0;       
+    bakerTotalNumberOfCustomer = 0; 
+    sumInterarrivalTime = 0; 
     numberOfArrivals = totalNumberOfCustomer; 
     sumSpentInSystem = 0;
 }

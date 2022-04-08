@@ -82,3 +82,8 @@ table, th, td {
     border-collapse: collapse;
 }
 
+/* performance properties */
+.left-align {
+    text-align: left;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+}

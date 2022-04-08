@@ -1,10 +1,39 @@
 const form = document.getElementById('form');
 const inputBar = document.getElementById('input-bar'); 
 const tableBody = document.getElementById('table-body');
+const performanceTable = document.getElementById('performance-table');
 
 let tableData = [];
 let dataHtml = '';
 let currPlace = 1;
+
+//general performance metrics
+let avgWaitingCustomer = 0;
+let probabilityWait = 0;
+let ableProportionIdle = 0;
+let bakerProportionIdle = 0;
+let ableAvgServiceTime = 0;
+let bakerAvgServiceTime = 0;
+let avgArrivalTime = 0;
+let avgWaitingInQueue = 0;
+let avgCustomerSpent = 0;
+
+
+//specific perofrmance metrics
+let sumWaitingTime = 0;        //1
+let totalNumberOfCustomer = 0; //1
+let numCustomerWait = 0;       //2
+let ableSumIdleTime = 0;          //3
+let bakerSumIdleTime = 0;          //3
+let ableLatestTimeServiceEnd = 0; //3
+let bakerLatestTimeServiceEnd = 0; //3
+let ableTotalServiceTime = 0;        //4
+let ableTotalNumberOfCustomer = 0; //4
+let bakerTotalServiceTime = 0;        //4
+let bakerTotalNumberOfCustomer = 0; //5
+let sumInterarrivalTime = 0; //6
+let numberOfArrivals = totalNumberOfCustomer; //6
+let sumSpentInSystem = 0; //7
 
 // 1. get number of iteration after submitting
 form.addEventListener('submit', (e) => {
@@ -39,7 +68,6 @@ form.addEventListener('submit', (e) => {
     tableData = [];
     currPlace = 1;
     let numIter = inputBar.value;
-
     generateNumIter(numIter);
 });
 
@@ -52,7 +80,80 @@ let generateNumIter = (numIter) => {
     dataToHtml();
     tableBody.innerHTML = '';
     tableBody.innerHTML += dataHtml;
+
+    //general performance metrics
+    avgWaitingCustomer = sumWaitingTime / totalNumberOfCustomer;
+    probabilityWait = numCustomerWait / totalNumberOfCustomer;
+    ableProportionIdle = ableSumIdleTime / ableLatestTimeServiceEnd;
+    bakerProportionIdle = bakerSumIdleTime / bakerLatestTimeServiceEnd;
+    ableAvgServiceTime = ableTotalServiceTime / ableTotalNumberOfCustomer;
+    bakerAvgServiceTime = bakerTotalServiceTime / bakerTotalNumberOfCustomer;
+    avgArrivalTime = sumInterarrivalTime / (totalNumberOfCustomer - 1);
+    avgWaitingInQueue = sumWaitingTime / numCustomerWait;
+    avgCustomerSpent = sumSpentInSystem / totalNumberOfCustomer;
+
+    console.log(sumWaitingTime, totalNumberOfCustomer);
+    console.log(numCustomerWait, totalNumberOfCustomer);
+    console.log(ableSumIdleTime, ableLatestTimeServiceEnd);
+    console.log(bakerSumIdleTime, bakerLatestTimeServiceEnd);
+    console.log(ableTotalServiceTime, ableTotalNumberOfCustomer);
+    console.log(bakerTotalServiceTime, bakerTotalNumberOfCustomer);
+    console.log(sumInterarrivalTime, totalNumberOfCustomer);
+    console.log(sumWaitingTime, numCustomerWait);
+    console.log(sumSpentInSystem, totalNumberOfCustomer);
+
+
+    generatePerformanceTable();
+    
 }
+
+//3. generate performance table
+let generatePerformanceTable = () => {
+    let performanceHtml = `
+        <tr>
+            <th colspan=2>Performance metrics</th>
+        <tr>
+            <td class='left-align'>Average waiting time for a customer</td>
+            <td class='left-align'>${avgWaitingCustomer}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>The probability that a customer has to wait in the queue</td>
+            <td class='left-align'>${probabilityWait}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>The proportion of idle time of the server of Able</td>
+            <td class='left-align'>${ableProportionIdle}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>The proportion of idle time of the server of Baker</td>
+            <td class='left-align'>${bakerProportionIdle}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>Average Service Time of Able</td>
+            <td class='left-align'>${ableAvgServiceTime}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>Average Service Time of Baker</td>
+            <td class='left-align'>${bakerAvgServiceTime}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>Average Time Between Arrivals</td>
+            <td class='left-align'>${avgArrivalTime}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>The average waiting time for those who wait in queue</td>
+            <td class='left-align'>${avgWaitingInQueue}</td>
+        </tr>
+        <tr>
+            <td class='left-align'>The average time a customer spends in the system</td>
+            <td class='left-align'>${avgCustomerSpent}</td>
+        </tr>
+    `;
+    performanceTable.innerHTML = '';
+    performanceTable.innerHTML += performanceHtml;
+}
+
+
 
 //convert data to html
 let dataToHtml = () => {
@@ -127,6 +228,7 @@ class Customer {
                 this.serviceAbleRda = '-';
                 this.serviceAble = '-';
                 this.idle = (this.arrival - this.bakerAvailable < 0) ? 0 : this.arrival - this.bakerAvailable;
+                bakerLatestTimeServiceEnd = this.endsBaker;
             } 
 
             //go to able
@@ -142,6 +244,7 @@ class Customer {
                 this.serviceBakerRda = '-';
                 this.serviceBaker = '-';
                 this.idle = (this.arrival - this.ableAvailable < 0) ? 0 : this.arrival - this.ableAvailable;
+                ableLatestTimeServiceEnd = this.endsAble;
             }
         }
 
@@ -150,12 +253,13 @@ class Customer {
             this.place = place;
             this.chosen = 'Able';
             this.interarrivalRda = '-';
-            this.interarrival = '-';
+            this.interarrival = 0;
             this.beginsAble = this.arrival;
             this.serviceAbleRda = generateRandomInt();
             this.serviceAble = getServiceRdaAble(this.serviceAbleRda);
             this.endsAble = this.serviceAble + this.beginsAble;
             this.spent = this.serviceAble + this.waiting;
+            ableLatestTimeServiceEnd = this.endsAble;
         }
 
         //get waiting time
@@ -169,6 +273,47 @@ class Customer {
         this.spent = (this.chosen === 'Able')
             ? this.serviceAble + this.waiting
             : this.serviceBaker + this.waiting;
+        
+        //specific performance metrics
+        sumWaitingTime += this.waiting; 
+        totalNumberOfCustomer = tableData.length + 1;
+
+        //get the number of customer who waited
+        if(this.waiting > 0) {
+            numCustomerWait ++;
+        }
+
+        //get sumIdleTime able
+        if(this.chosen === 'Able'){
+            ableSumIdleTime += this.idle;
+        }
+
+        //get sumIdleTime baker
+        if(this.chosen === 'Baker'){
+            bakerSumIdleTime += this.idle;
+        }
+
+        //get able total service time
+        if(this.chosen === 'Able'){
+            ableTotalServiceTime += this.serviceAble;
+        } else {
+            bakerTotalServiceTime += this.serviceBaker;
+        }
+
+        //get total number of customer for able and baker
+        if(this.chosen === 'Able'){
+            ableTotalNumberOfCustomer ++;
+        } else {
+            bakerTotalNumberOfCustomer ++;
+        }
+
+        //get sum of interarrival time
+        sumInterarrivalTime += this.interarrival;
+
+        //get sum of time spent in the system
+        sumSpentInSystem += this.spent;
+
+        
 
         tableData.push({
             place: this.place,
